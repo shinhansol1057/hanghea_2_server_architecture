@@ -1,5 +1,8 @@
 ## 프로젝트
 
+## ERD
+![ERD](./docs/erd/hhplus_erd.png)
+
 ## Getting Started
 
 ### Prerequisites
