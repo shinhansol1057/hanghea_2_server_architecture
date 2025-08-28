@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import kr.hhplus.be.server.point.controller.dto.ChargeReq
 import kr.hhplus.be.server.point.controller.dto.ChargeRes
 import kr.hhplus.be.server.point.service.PointService
+import kr.hhplus.be.server.product.controller.dto.ProductDetailRes
 import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
