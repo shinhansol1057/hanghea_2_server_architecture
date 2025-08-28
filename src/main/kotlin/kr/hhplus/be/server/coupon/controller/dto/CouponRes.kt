@@ -14,12 +14,12 @@ data class CouponRes (
     @field:Schema(description = "쿠폰 가격", example = "5000")
     val price: Int,
 
-    @field:Schema(description = "만료 시간", example = "2025-12-31T23:59:59")
-    val expirationDate: LocalDateTime,
+    @field:Schema(description = "만료 시간", example = "2025년 12월 31일")
+    val expirationDate: String,
 
     @field:Schema(description = "쿠폰 사용 여부", example = "false")
     val isUsed: Boolean,
 
-    @field:Schema(description = "쿠폰 생성 시간", example = "2025-01-01T12:00:00")
-    val createdAt: LocalDateTime
+    @field:Schema(description = "쿠폰 생성 시간", example = "2025년 01월 01일 12시 00분 00초")
+    val createdAt: String
 )

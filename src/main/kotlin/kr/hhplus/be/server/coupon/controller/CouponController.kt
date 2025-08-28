@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import kr.hhplus.be.server.coupon.controller.dto.CouponListRes
+import kr.hhplus.be.server.coupon.controller.dto.CouponRes
 import kr.hhplus.be.server.coupon.service.CouponService
 import org.springframework.http.ProblemDetail
 import org.springframework.web.bind.annotation.*
@@ -97,4 +98,43 @@ class CouponController(
     }
 
 
+    @PostMapping("/limit/{userId}")
+    @Operation(
+        summary = "선착순 쿠폰 발급",
+        description = "선착순 쿠폰을 발급합니다."
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "선착순 쿠폰 발급 완료",
+        content = [Content(schema = Schema(implementation = CouponRes::class))]
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "유저를 찾을 수 없음",
+        content = [Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ProblemDetail::class),
+            examples = [ExampleObject(
+                name = "not-found",
+                value = """{"type":"about:blank","title":"User Not Found","status":404,"detail":"유저를 찾을 수 없습니다.","code":"USER_NOT_FOUND"}"""
+            )]
+        )]
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "잔여 쿠폰이 없음",
+        content = [Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ProblemDetail::class),
+            examples = [ExampleObject(
+                name = "not-found",
+                value = """{"type":"about:blank","title":"Not Found","status":404,"detail":"잔여 쿠폰이 없습니다.","code":"NOT_FOUND"}"""
+            )]
+        )]
+    )
+    fun postLimitCoupon(
+        @PathVariable("userId") userId: Long,
+    ): CouponRes {
+        return couponService.postLimitCoupon(userId)
+    }
 }
