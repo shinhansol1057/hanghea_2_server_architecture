@@ -8,9 +8,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import kr.hhplus.be.server.point.controller.dto.ChargeReq
 import kr.hhplus.be.server.point.controller.dto.ChargeRes
+import kr.hhplus.be.server.point.controller.dto.GetPointRes
 import kr.hhplus.be.server.point.service.PointService
 import kr.hhplus.be.server.product.controller.dto.ProductDetailRes
 import org.springframework.http.ProblemDetail
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -73,6 +76,34 @@ import org.springframework.web.bind.annotation.RestController
 class PointController(
     private val pointService: PointService
 ) {
+
+    @GetMapping("/{userId}")
+    @Operation(
+        summary = "포인트 조회",
+        description = "사용자의 포인트를 조회합니다."
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "포인트 조회 성공",
+        content = [Content(schema = Schema(implementation = GetPointRes::class))]
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "유저를 찾을 수 없음",
+        content = [Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ProblemDetail::class),
+            examples = [ExampleObject(
+                name = "not-found",
+                value = """{"type":"about:blank","title":"User Not Found","status":404,"detail":"유저를 찾을 수 없습니다.","code":"USER_NOT_FOUND"}"""
+            )]
+        )]
+    )
+    fun getPoint(
+        @PathVariable("userId") userId: Long,
+    ): GetPointRes {
+        return pointService.getPoint(userId)
+    }
 
     @PostMapping("/charge")
     @Operation(
