@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MissingServletRequestParameterException
 import jakarta.validation.ConstraintViolationException
+import org.springframework.web.client.HttpClientErrorException.UnprocessableEntity
 
 @RestControllerAdvice
 @Order(1)

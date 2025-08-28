@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.point.controller
+package kr.hhplus.be.server.order.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -6,12 +6,11 @@ import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import kr.hhplus.be.server.order.controller.dto.OrderProductReq
+import kr.hhplus.be.server.order.service.OrderService
 import kr.hhplus.be.server.point.controller.dto.ChargeReq
 import kr.hhplus.be.server.point.controller.dto.ChargeRes
-import kr.hhplus.be.server.point.controller.dto.GetPointRes
-import kr.hhplus.be.server.point.service.PointService
 import org.springframework.http.ProblemDetail
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -71,65 +70,58 @@ import org.springframework.web.bind.annotation.RestController
     ]
 )
 @RestController
-@RequestMapping("/point")
-class PointController(
-    private val pointService: PointService
+@RequestMapping("/order")
+class OrderController(
+    private val orderService: OrderService
 ) {
-
-    @GetMapping("/{userId}")
+    @PostMapping("/{productId}")
     @Operation(
-        summary = "포인트 조회",
-        description = "사용자의 포인트를 조회합니다."
+        summary = "상품 주문",
+        description = "상품을 주문하고 결제합니다."
     )
     @ApiResponse(
         responseCode = "200",
-        description = "포인트 조회 성공",
-        content = [Content(schema = Schema(implementation = GetPointRes::class))]
+        description = "주문 및 결제 성공",
+    )
+    @ApiResponse(
+        responseCode = "422",
+        description = "상품 재고 부족",
+        content = [Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ProblemDetail::class),
+            examples = [ExampleObject(
+                name = "UnprocessableEntity",
+                value = """{"type":"about:blank","title":"Unprocessable_Entity","status":422,"detail":"상품의 재고가 부족합니다.","code":"UNPROCESSABLE_ENTITY"}"""
+            )]
+        )]
+    )
+    @ApiResponse(
+        responseCode = "422",
+        description = "포인트 부족",
+        content = [Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ProblemDetail::class),
+            examples = [ExampleObject(
+                name = "UnprocessableEntity",
+                value = """{"type":"about:blank","title":"Unprocessable_Entity","status":422,"detail":"포인트가 부족합니다.","code":"UNPROCESSABLE_ENTITY"}"""
+            )]
+        )]
     )
     @ApiResponse(
         responseCode = "404",
-        description = "유저를 찾을 수 없음",
+        description = "상품을 찾을 수 없음",
         content = [Content(
             mediaType = "application/json",
             schema = Schema(implementation = ProblemDetail::class),
             examples = [ExampleObject(
                 name = "not-found",
-                value = """{"type":"about:blank","title":"User Not Found","status":404,"detail":"유저를 찾을 수 없습니다.","code":"USER_NOT_FOUND"}"""
+                value = """{"type":"about:blank","title":"Not Found","status":404,"detail":"상품을 찾을 수 없습니다.","code":"NOT_FOUND"}"""
             )]
         )]
     )
-    fun getPoint(
-        @PathVariable("userId") userId: Long,
-    ): GetPointRes {
-        return pointService.getPoint(userId)
+    fun orderProduct(
+        @RequestBody req: OrderProductReq,
+    ) {
+        orderService.orderProduct(req)
     }
-
-    @PostMapping("/charge")
-    @Operation(
-        summary = "포인트 충전",
-        description = "사용자의 포인트를 지정한 금액만큼 충전합니다."
-    )
-    @ApiResponse(
-        responseCode = "200",
-        description = "포인트 충전 성공",
-        content = [Content(schema = Schema(implementation = ChargeRes::class))]
-    )
-    @ApiResponse(
-        responseCode = "404",
-        description = "유저를 찾을 수 없음",
-        content = [Content(
-            mediaType = "application/json",
-            schema = Schema(implementation = ProblemDetail::class),
-            examples = [ExampleObject(
-                name = "not-found",
-                value = """{"type":"about:blank","title":"User Not Found","status":404,"detail":"유저를 찾을 수 없습니다.","code":"USER_NOT_FOUND"}"""
-            )]
-        )]
-    )
-    fun chargePoint(
-        @RequestBody req: ChargeReq,
-    ): ChargeRes {
-        return pointService.chargePoint(req.userId, req.amount)
-    }
-
 }
