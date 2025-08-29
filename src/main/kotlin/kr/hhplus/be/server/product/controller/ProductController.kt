@@ -97,9 +97,7 @@ class ProductController(
         description = "베스트셀러 조회 성공",
         content = [Content(schema = Schema(implementation = ProductListRes::class))]
     )
-    fun getTop3BestSellers(
-        @Parameter(description = "최근 N일(기본 7일), 1~90 사이", example = "7")
-    ): ProductListRes {
+    fun getTop3BestSellers(): ProductListRes {
         return productService.getTopBestSellers()
     }
 
