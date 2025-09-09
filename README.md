@@ -1,5 +1,12 @@
 ## 프로젝트
 
+## ERD
+![ERD](./docs/erd/hhplus_erd.png)
+
+## 인프라구성도
+![infrastructure](./docs/infrastructure/infrastructure.png)
+> 원본 파일은 [infrastructure.drawio](./docs/infrastructure/infrastructure.drawio) 에서 편집 가능합니다.
+
 ## Getting Started
 
 ### Prerequisites
