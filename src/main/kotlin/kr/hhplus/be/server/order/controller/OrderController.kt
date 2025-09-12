@@ -1,12 +1,14 @@
 package kr.hhplus.be.server.order.controller
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import kr.hhplus.be.server.order.controller.dto.OrderProductReq
+import kr.hhplus.be.server.order.controller.dto.OrderProductRes
 import kr.hhplus.be.server.order.service.OrderService
 import kr.hhplus.be.server.point.controller.dto.ChargeReq
 import kr.hhplus.be.server.point.controller.dto.ChargeRes
@@ -121,7 +123,7 @@ class OrderController(
     )
     fun orderProduct(
         @RequestBody req: OrderProductReq,
-    ) {
-        orderService.orderProduct(req)
+    ): OrderProductRes {
+        return orderService.orderProduct(req)
     }
 }

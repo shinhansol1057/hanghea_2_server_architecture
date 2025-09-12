@@ -60,6 +60,14 @@ dependencies {
 	testImplementation("org.testcontainers:mysql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+	testImplementation(platform("io.kotest:kotest-bom:5.9.1"))
+	testImplementation("io.kotest:kotest-runner-junit5")
+	testImplementation("io.kotest:kotest-assertions-core")
+	testImplementation("io.kotest:kotest-property")
+
+	testImplementation("io.mockk:mockk:1.13.12")
+	testImplementation("com.ninja-squad:springmockk:4.0.2")
+
 	// Swagger UI + OpenAPI 생성
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.7")
 
